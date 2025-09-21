@@ -25,9 +25,9 @@ cd YSell
 
 python -m venv venv
 # Для Windows
-venv\Scripts\activate
+markvenv\Scripts\activate
 # Для macOS / Linux
-source venv/bin/activate
+source markvenv/bin/activate
 
 Установите зависимости:
 
@@ -78,3 +78,4 @@ GET /cart - Получение содержимого корзины.
 Email: usufmuratov97@gmail.com
 
 GitHub: https://github.com/yukooo7
+
