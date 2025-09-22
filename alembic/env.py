@@ -9,8 +9,8 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from alembic import context
-from app.database import Base
-from app.models import user, sale, token_blakclist, order, product, cart
+from backend.database import Base
+from backend.models import user, sale, token_blakclist, order, product, cart
 
 
 config = context.config
