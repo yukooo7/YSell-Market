@@ -10,6 +10,7 @@ from typing import List
 class Product(Base):
     __tablename__ = 'products'
     id:Mapped[int] = mapped_column(primary_key=True, index=True)
+    image_url:Mapped[str] = mapped_column(nullable=True)
     name:Mapped[str] = mapped_column(nullable=False)
     price:Mapped[float] = mapped_column(nullable=False)
     category:Mapped[Category] = mapped_column(Enum(Category), default=None)

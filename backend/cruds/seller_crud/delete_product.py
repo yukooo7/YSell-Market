@@ -31,6 +31,7 @@ async def delete_products(product_id:int, db:AsyncSession, user:User):
 
     if product_exist.user_id != user.id:
         raise HTTPException(status_code=401, detail="У вас нет прав удалить этот товар")
+    
     await db.delete(product_exist)
     try:
         await db.commit()

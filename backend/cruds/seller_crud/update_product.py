@@ -31,8 +31,8 @@ async def update_product(product_id:int, new_data:ProductUpdate, db:AsyncSession
     if product_exist.user_id != user.id:
         raise HTTPException(status_code=401, detail="У вас нет прав обнавитэтот товар ")
 
-    prod_data = new_data.model_dump(exclude_unset=True)
-    for k, v in prod_data.items():
+
+    for k, v in new_data.items():
         setattr(product_exist, k, v)
 
     try:

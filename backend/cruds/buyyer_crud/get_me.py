@@ -4,6 +4,7 @@ from schemas.user import UserOut, ProfileUpdate, PasswordUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.password_function import hash_password, check_password
 
+
 async def get_me(user:User) -> UserOut:
     """Личны кабинет или профил тоест данные о себе
 
@@ -30,8 +31,8 @@ async def upgrade_profile(user_data:ProfileUpdate, user:User, db:AsyncSession) -
     Returns:
         UserOut: Изменненый профил
     """
-    new_user_data = user_data.model_dump(exclude_unset=True)
-    for k, v in new_user_data.items():
+   
+    for k, v in user_data.items():
         setattr(user, k, v)
     try:
         await db.commit()

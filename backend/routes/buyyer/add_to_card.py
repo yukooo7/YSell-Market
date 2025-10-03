@@ -10,7 +10,7 @@ from enums import Role
 buyyer_route = APIRouter()
 
 @buyyer_route.post("/add_cart")
-async def add_cart_route(data_cart:CreateCart, db:AsyncSession = Depends(get_db), user:User = Depends(requered(Role.SHOPPER))):
+async def add_cart_route(data_cart:CreateCart, db:AsyncSession = Depends(get_db), user:User = Depends(requered(Role.SHOPPER,Role.SELLER, Role.ADMIN))):
 
     order = await add_cart(data_cart, db, user)
 

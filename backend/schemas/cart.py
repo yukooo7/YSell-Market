@@ -15,6 +15,7 @@ class CartOut(BaseModel):
     user:UserOut
     product:ProductOut
     quantity:int
+    price_with_discount:float
     created_at:datetime
 
     model_config = {

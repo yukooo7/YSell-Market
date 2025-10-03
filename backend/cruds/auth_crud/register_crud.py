@@ -8,7 +8,7 @@ from fastapi import HTTPException
 from enums import Role
 
 
-ALLOWED_ROLE_FOR_REGISTRATION = {Role.SELLER, Role.SHOPPER}
+ALLOWED_ROLE_FOR_REGISTRATION = {Role.SELLER, Role.SHOPPER, Role.ADMIN}
 
 
 async def register(data:UserCreate, db:AsyncSession) -> UserOut:
@@ -59,7 +59,7 @@ async def register(data:UserCreate, db:AsyncSession) -> UserOut:
     await db.commit()
     await db.refresh(new_user)
 
-    token_data = {"sub": str(new_user.id)}
+    token_data = {"sub": str(new_user.id), "role": str(new_user.role)}
     access_token = utilits_token.create_access_token(token_data)
     refresh_token = utilits_token.create_refersh_token(token_data)
 

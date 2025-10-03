@@ -1,10 +1,9 @@
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException
 from models.order import Order
 from schemas.order import  MessageDelete
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.user import User
-from enums import Role
-from services.permission import requered
+
+
 
 
 async def delete_order(order_id:int, db:AsyncSession) -> MessageDelete:
@@ -25,8 +24,9 @@ async def delete_order(order_id:int, db:AsyncSession) -> MessageDelete:
         raise HTTPException(status_code=404, detail='Заказ не найден')
     
     try:
-        db.delete(order)
+        await db.delete(order)
         await db.commit()
+
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=500, detail=str(e))

@@ -9,6 +9,7 @@ from typing import List
 class User(Base):
     __tablename__ = 'users'
     id:Mapped[int] = mapped_column(primary_key=True, index=True)
+    avatar_url:Mapped[str] = mapped_column(nullable=True)
     username:Mapped[str] = mapped_column( nullable=False)
     email:Mapped[str] = mapped_column(unique=True, index=True, nullable=False)
     phone:Mapped[str] = mapped_column(nullable=False)

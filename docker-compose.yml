@@ -1,21 +1,45 @@
 services:
-  web:
-    build: .
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # Next.js по умолчанию использует порт 3000
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-      - ./app:/app
-    depends_on:
-      - db
     environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:muratov007@db:5432/marcetplace
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
 
+  # Опционально: PostgreSQL
   db:
-    image: postgres:15
-    restart: always
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=youruser
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=yourdb
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: muratov007
-      POSTGRES_DB: marcetplace
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

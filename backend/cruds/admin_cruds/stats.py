@@ -4,6 +4,7 @@ from models.user import User
 from models.product import Product
 from models.order import Order, OrderItem
 from schemas.stats import SellerSales, AdminState
+from sqlalchemy.orm import selectinload
 
 
 async def get_admin_stats(db:AsyncSession) -> AdminState:
@@ -19,7 +20,7 @@ async def get_admin_stats(db:AsyncSession) -> AdminState:
     result = await db.execute(select(func.count()).select_from(Order))
     total_orders = result.scalar() or 0
 
-    result = await db.execute(select(func.sum(Order.price)).where(Order.status.in_(['PAID', "DELIVERED"])))
+    result = await db.execute(select(func.sum(Order.price)).where(Order.status.in_(['PAID', "PENDING"])))
     total_revenue = result.scalar() or 0.0
 
     result = await db.execute(select(User.id, User.username, func.count().label("total_order"))

@@ -6,9 +6,11 @@ from models.user import User
 from models.order import Order, OrderItem
 from schemas.order import OrderOut
 from sqlalchemy.orm import selectinload
+from schemas.cart import CartOut
+from  typing import List
 
 
-async def get_all_cart(user:User, db:AsyncSession):
+async def get_all_cart(user:User, db:AsyncSession) -> List[CartOut]:
     """ Показывает все товраы которые добавил в карзину
 
     Args:
@@ -22,13 +24,13 @@ async def get_all_cart(user:User, db:AsyncSession):
         List: Все товары которы добавил в карзину
     """
 
-    result = await db.execute(select(BusketCart).where(BusketCart.user_id == user.id))
+    result = await db.execute(select(BusketCart).where(BusketCart.user_id == user.id).options(selectinload(BusketCart.product), selectinload(BusketCart.user)))
     exist_carts = result.scalars().all()
 
     if not exist_carts:
         raise HTTPException(status_code=404, detail="Карзина товаров пуста")
     
-    return exist_carts
+    return [CartOut.model_validate(c) for c in exist_carts]
 
 
 

@@ -33,12 +33,9 @@ async def login(data:ResponseLogin, db:AsyncSession) -> RequestToken:
     if not check_password(data.password, user.password):
         raise HTTPException(status_code=400, detail="Введень не правелььный пароль")
     
-    payload = {"sub":str(user.id)}
+    payload = {"sub":str(user.id), "role": user.role}
     access_token  = create_access_token(payload)
     refresh_token  = create_refersh_token(payload)
 
     return RequestToken(access_token=access_token, refresh_token=refresh_token, token_type='bearer')
-
-
-
 

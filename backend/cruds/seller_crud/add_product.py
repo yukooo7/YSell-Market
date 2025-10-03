@@ -4,9 +4,9 @@ from sqlalchemy.future import select
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.user import User
+from typing import Optional
 
-
-async def add_product(data:ProductCreate, db:AsyncSession, user:User):
+async def add_product(data:ProductCreate, image_url: Optional[str], db:AsyncSession, user:User):
     """ Добавлени  продукта
 
     Args:
@@ -27,7 +27,8 @@ async def add_product(data:ProductCreate, db:AsyncSession, user:User):
         price = data.price,
         category = data.category,
         user_id = user.id,
-        stock = data.stock
+        stock = data.stock,
+        image_url = image_url
     )
     try:
         db.add(new_product)
@@ -37,4 +38,4 @@ async def add_product(data:ProductCreate, db:AsyncSession, user:User):
         await db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
     
-    return new_product
+    return ProductOut.model_validate(new_product)

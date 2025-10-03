@@ -12,7 +12,7 @@ from routes.admin.user_route.update_user import api_route as update_user
 # from routes.admin.poduct_route.get_product_by_id import api_route as get_product_by_id
 # from routes.admin.poduct_route.get_products import api_route as get_producs
 # from routes.admin.poduct_route.update_product import api_route as update_product
-from routes.admin.order_route.delete_order import api_route as delete_order
+from routes.admin.order_route.delete_order_r import api_route as delete_order
 from routes.admin.order_route.get_orders import api_route as get_orders
 from routes.admin.order_route.reserve_order_status import api_route as reserve_order_status
 from routes.admin.stats_route import api_route as get_stats
@@ -27,9 +27,15 @@ from routes.seller_route.create_sale import product_route as create_sale_route
 from routes.seller_route.delete_product_route import product_route as delete_route
 from routes.seller_route.get_product import product_route as get_product_route
 from routes.seller_route.update_product import product_route as update_route
+from routes.goest.get_products import guest_route as goest_prod
+from routes.goest.get_product_by_t import guest_route as goest_prod_b_t
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 origins = ["http://localhost:3000"]
 
@@ -75,6 +81,8 @@ app.include_router(create_sale_route, prefix="/seller")
 app.include_router(delete_route, prefix="/seller")
 app.include_router(get_product_route, prefix="/seller")
 app.include_router(update_route, prefix="/seller")
+app.include_router(goest_prod, prefix="/guest")
+app.include_router(goest_prod_b_t, prefix="/guest")
 
 
 

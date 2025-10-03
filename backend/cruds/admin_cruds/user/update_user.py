@@ -25,8 +25,8 @@ async def update_user_crud(user_id:int,new_user: UserUpdate, db:AsyncSession)-> 
         raise HTTPException(status_code=404, detail="Пользователь не найден")
     
 
-    update_data = new_user.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
+
+    for key, value in new_user.items():
         setattr(user, key, value)
 
     try:
